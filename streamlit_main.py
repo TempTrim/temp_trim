@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 
 #LIST_OF_CITIES = ["Zurich", "Bern", "Basel", "Geneva", "Neuchatel"]
 LIST_OF_CITIES = ["Zurich"]
-# TODO only Zurich for testing so far
 
 C_P_AIR = 1004 # mass-specific heat capacity of air (at T=20°C, p=1050hPa) [J/kgK]
 RHO_AIR = 1.275 # density of air (at T=20°C, p=1050hPa) [kg/m³]
@@ -29,9 +28,9 @@ MONTH_DAYS_MID = [16, 46, 75, 106, 136, 167, 197, 228, 259, 289, 320, 350] # day
 TIME_SHIFT_TO_UTC = +1 # UTC to MST
 
 CSV_PATH_TEMPERATURE = 'TempZurichHourly.csv'
-CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/tram-energy-savings-app/TempZurichHourly.csv"
+#CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/tram-energy-savings-app/TempZurichHourly.csv"
 CSV_PATH_SOLAR_IRRADIATION = 'SRZurichHourly.csv'
-CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/tram-energy-savings-app/SRZurichHourly.csv"
+#CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/tram-energy-savings-app/SRZurichHourly.csv"
 
 
 
@@ -517,6 +516,8 @@ st.set_page_config(layout="centered")
 
 st.title("Energy Saving in Tram Heating - Calculator")
 
+
+
 # Take inputs : - Length, width, height (in m)
 # Average operation from [time] to [time] (in hours, minutes)
 # Average tram count in operation
@@ -533,6 +534,7 @@ global T_tram
 global heater_inputs
 T_tram = []
 trams = []
+heater_inputs = [] 
 
 #region Specifications
 
@@ -657,9 +659,6 @@ def tram_inputs(i):
 
         st.markdown(f" ### Heating Specifications for Tram {i+1}:")
 
-        global heater_inputs
-        
-        heater_inputs = []
 
         def heater_options(heater):
 
@@ -677,12 +676,15 @@ def tram_inputs(i):
             else:
                 cop = "Not Applicable"
 
-            heater_inputs.append({
+            heater_dict = ({
                 "Heater Type": heater_type,
                 "Maximum Thermal Power (kW)": max_thermal_power,
                 "COP (full load)": cop,
-                "Tram" : f"Tram_{i+1}"
+                "Tram": f"Tram_{i+1}"
             })
+
+            heater_inputs.append(heater_dict)
+
 
 
         if f'heaters_{i}' not in st.session_state:
@@ -704,6 +706,7 @@ def tram_inputs(i):
         reset_button = st.button("Remove Heaters", on_click=reset_heaters, key=f"reset_heaters_{i}")
 
         # Print the user inputs
+        
         df = pd.DataFrame(heater_inputs)
         # if dataframe is not empty
         if not df.empty:
@@ -711,13 +714,11 @@ def tram_inputs(i):
             filtered_display_df = df.copy(deep=True)
             filtered_display_df = filtered_display_df[filtered_display_df["Tram"] == f"Tram_{i+1}"]
             filtered_display_df = df.drop(columns=["Tram"])
-            st.dataframe(filtered_display_df,hide_index=True)
+            #st.dataframe(filtered_display_df,hide_index=True)
         else:
             st.write("No heaters added yet.")
 
         if not df.empty: 
-
-            
             
             df = df[df['Tram'] == f"Tram_{i+1}"]
             resistive_df = df[df['Heater Type'] == 'Resistance']
@@ -752,6 +753,16 @@ if "tram_count" not in st.session_state:
 for i in range (tram_count):
     tram_inputs(i)
 
+for i in range(tram_count):
+    with tabs[i]:
+        selected_heaters = [heater for heater in heater_inputs if heater["Tram"] == f"Tram_{i+1}"]
+        df = pd.DataFrame(selected_heaters)
+        if not df.empty:
+            df = df.drop(columns=["Tram"])
+            st.dataframe(df, hide_index=True)
+        else:
+            st.write("No heaters added yet.")
+          
 
 #region: Temperature Inputs
 
@@ -841,8 +852,6 @@ if "consumption" not in st.session_state:
     st.session_state["consumption"] = consumption
 
 if calc_button:
-
-    st.write(len(heater_inputs))
     #st.write(T_tram)
     if len(heater_inputs) < tram_count or T_tram == []:
     
@@ -875,8 +884,8 @@ if calc_button:
                                 round(consumption.electricity_total[T] * 1e-6, 2),
                                 round(consumption.electricity_cost_total[T] * 1e-6, 2),
                                 consumption.savings_total[T]])
-            ec_df = pd.DataFrame(ec_data, columns=("T_setpoint [°C]", "Heat energy [MWh]", "Electricity consumption [MWh]", "Cost [MCHF]", "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)"))
-            st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint [°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy\n[MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.TextColumn()})
+            ec_df = pd.DataFrame(ec_data, columns=("T_setpoint[°C]", "Heat energy [MWh]", "Electricity consumption [MWh]", "Cost [MCHF]", "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)"))
+            st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint<br>[°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy\n[MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.TextColumn()})
             if "ec" not in st.session_state["ec"]:
                 st.session_state["ec"] = ec_df
             st.write(generate_plot_total(consumption))
