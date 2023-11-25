@@ -12,13 +12,10 @@ from dataclasses import dataclass
 import math
 import matplotlib.pyplot as plt
 
-
-
-
 ##### CONSTANTS #####
 
-#LIST_OF_CITIES = ["Zurich", "Bern", "Basel", "Geneva", "Neuchatel"]
-LIST_OF_CITIES = ["Zurich"]
+LIST_OF_CITIES = ["Zurich", "Bern", "Basel", "Geneva", "Neuchatel"]
+#LIST_OF_CITIES = ["Zurich"]
 
 C_P_AIR = 1004 # mass-specific heat capacity of air (at T=20°C, p=1050hPa) [J/kgK]
 RHO_AIR = 1.275 # density of air (at T=20°C, p=1050hPa) [kg/m³]
@@ -27,10 +24,12 @@ MONTH_DAYS_BEGIN = [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366] 
 MONTH_DAYS_MID = [16, 46, 75, 106, 136, 167, 197, 228, 259, 289, 320, 350] # day in year of mid-month
 TIME_SHIFT_TO_UTC = +1 # UTC to MST
 
-CSV_PATH_TEMPERATURE = 'TempZurichHourly.csv'
-#CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/tram-energy-savings-app/TempZurichHourly.csv"
-CSV_PATH_SOLAR_IRRADIATION = 'SRZurichHourly.csv'
-#CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/tram-energy-savings-app/SRZurichHourly.csv"
+#CSV_PATH_TEMPERATURE = 'TempZurichHourly.csv'
+CSV_PATH_TEMPERATURE = 'TempSwitzerland.csv'
+CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/temp_trim/TempSwitzerland.csv"
+#CSV_PATH_SOLAR_IRRADIATION = 'SRZurichHourly.csv'
+CSV_PATH_SOLAR_IRRADIATION = 'SRBSwitzerland.csv'
+CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/temp_trim/SRBSwitzerland.csv"
 
 
 
@@ -459,9 +458,9 @@ def generate_plot_instantaneous(consumption, T_setpoint, month, hour):
         categories[2*t] = consumption.tram_names[t] + ' (heating)'
         categories[2*(t+1)-1] = consumption.tram_names[t] + ' (losses)'
 
-    st.write(categories)
-    print("next")
-    #st.write(data_lower)
+   # st.write(categories)
+   # print("next")
+   # st.write(data_lower)
 
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -604,8 +603,8 @@ def tram_inputs(i):
             "Height [m]": 3.6,
             "Tram count": 88,
             "Average passenger count": 37,
-            "Average fresh air supply via ventilation [m³/h]": 0.37*3600,
-            "Average fresh air supply from door openings [m³/h]": 0.86*3600,
+            "Average fresh air supply via ventilation [m³/h]": 1345,
+            "Average fresh air supply from door openings [m³/h]": 3215,
             "Average convection coefficient [W/(m²K)]": 2.8,
             "Fraction of Trams in Operation": 0.9,
             "Auxillary Heat generated in tram [W]": 1500
@@ -708,15 +707,6 @@ def tram_inputs(i):
         # Print the user inputs
         
         df = pd.DataFrame(heater_inputs)
-        # if dataframe is not empty
-        if not df.empty:
-            #df.set_index("Heater Type", inplace=True)
-            filtered_display_df = df.copy(deep=True)
-            filtered_display_df = filtered_display_df[filtered_display_df["Tram"] == f"Tram_{i+1}"]
-            filtered_display_df = df.drop(columns=["Tram"])
-            #st.dataframe(filtered_display_df,hide_index=True)
-        else:
-            st.write("No heaters added yet.")
 
         if not df.empty: 
             
@@ -739,8 +729,6 @@ def tram_inputs(i):
             cops = []
 
         #endregion
-
-
 
         new_tram = Tram(name=name,passenger_number=passenger_count,volume_flow_ventilation=ventilation/3600,
                         volume_flow_doors=door_openings/3600,length=length,width=width,height=height,k_chassis=convection,
@@ -817,7 +805,6 @@ end_day = st.number_input("Day of the month when operation of trams is ended (1-
 begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0, max_value=24, value=5,step = 1, key=f"begin_hour_{i}")
 end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0, max_value=24, step = 1, value=24, key=f"end_hour_{i}")
 
-
 #endregion
 
 #region Electricity Costs
@@ -834,10 +821,10 @@ cost_electricity = st.number_input("Cost of electricity [CHF/kWh]:", min_value=0
 # Button which executes Python function to calculate and display results
 
 def generate_results():
-    T_zurich = load_temperature_data(location)
+    T_location = load_temperature_data(location)
     I_sun_zurich = load_solar_irradiation_data(location)
     climate_schedule = ClimateSchedule(begin_month, begin_day, end_month, end_day, begin_hour, end_hour,
-                                       47.375, T_zurich, I_sun_zurich, 0.8, cost_electricity)
+                                       47.375, T_location, I_sun_zurich, 0.8, cost_electricity)
     
 
     # calculation
@@ -872,8 +859,46 @@ if calc_button:
             # Dedup logic for list of temperatures
             T_tram = list(dict.fromkeys(T_tram))
             consumption, climate_schedule_final = generate_results()
+            heat_inst = consumption.heat_instantaneous
+            index_tuples = []
+            values = []
 
+            def get_output_csv(heat_inst = [], elec_inst = []):
+
+                def flatten_list(nested_list,current_index):
+                    for i, value in enumerate(nested_list):
+                        if isinstance(value, list):
+                            flatten_list(value,current_index + [i])
+                        else:
+                            index_tuples.append(current_index + [i])
+                            values.append(value)
+                
+                flatten_list(heat_inst, [])
+
+                df_heat = pd.DataFrame(values, index=pd.MultiIndex.from_tuples(index_tuples, names=['Temperature', 'Month', 'Hour', 'Tram', 'Heat_Type']), columns=['Value'])
+                heat_type_mapper = {0: 'Solar heating', 1: 'Passenger Heat', 2: 'Auxillary Heat', 3: 'Convective Losses', 4: 'Ventilation Losses', 5: 'Open Door Losses', 6: 'Heating Demand'} 
+                tram_mapper = {}
+                for i, tram in enumerate(trams):
+                    tram_mapper[i] = tram.name
+                temp_mapper = {}
+                for i, temp in enumerate(T_tram):
+                    temp_mapper[i] = temp
+                df_heat = df_heat.reset_index()
+                df_heat = df_heat.replace({"Temperature": temp_mapper})
+                df_heat = df_heat.replace({"Heat_Type": heat_type_mapper})
+                df_heat = df_heat.replace({"Tram": tram_mapper})
+
+                df_elec = pd.DataFrame()
+
+                return df_heat, df_elec
+
+            df_heat, df_elec = get_output_csv(heat_inst)
+            
+            if "df_heat" not in st.session_state:
+                st.session_state["df_heat"] = df_heat
             st.session_state["consumption"] = consumption
+            if "climate_schedule" not in st.session_state:
+                st.session_state["climate_schedule"] = climate_schedule_final
 
             st.markdown("## Total Energy and Cost:")
 
@@ -927,6 +952,11 @@ if "calc_complete" in st.session_state:
         month_list = [month + 1 for month in consumption.months]
         ins_month = st.selectbox("Select Month", month_list) - 1
         ins_hour = st.selectbox("Select Hour", consumption.hours)
+        # Save to dataframe 
+        T_environment = st.session_state["climate_schedule"].T_environment[ins_month][ins_hour]
+        df_operating = pd.DataFrame({"Outside Temperature °C":T_environment,"Setpoint Temperature":ins_T_setpoint, "Month":ins_month+1, "Hour":ins_hour}, index=[0])
+        if "df_operating" not in st.session_state:
+            st.session_state["df_operating"] = df_operating
 
 inst_button = st.button("Show Instantaneous Power Values", key="show_instantaneous_power_values",disabled=inst_button_hide)
 
@@ -950,19 +980,27 @@ if inst_button:
     ins = pd.DataFrame(ins_data, columns=(
         ['Tram', 'Heating power [kW]', 'Solar heat [kW]', 'Passenger heat [kW]', 'Aux. device heat [kW]',
          'Convective losses [kW]', 'Ventilation losses [kW]', 'Open door losses [kW]', 'Electricity consumption [kW]']))
+    st.divider()
     st.markdown(" ## Results: ")
     st.markdown(" ### Total Energy and Costs: ")
     ec_df = st.session_state["ec"]
     st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint [°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy [MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.NumberColumn(format="%.2f")})
     st.write(generate_plot_total(consumption))
+    st.divider()
+    st.markdown(" ### Selected Instantaneous Period:")
+    df_operating = st.session_state["df_operating"]
+    st.dataframe(df_operating, hide_index=True, column_config= {'Outside Temperature °C': st.column_config.NumberColumn(format="%.2f"),'Setpoint Temperature':st.column_config.NumberColumn(format="%.2f"), "Month":st.column_config.NumberColumn(format="%.0f"), "Hour":st.column_config.NumberColumn(format="%.0f")})
     st.markdown(" ### Instantaneous Power Values: ")
     st.dataframe(ins,hide_index= True, column_config= {'Tram':st.column_config.TextColumn(), 'Heating power [kW]':st.column_config.NumberColumn(format="%.2f"), 'Solar heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Passenger heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Aux. device heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Convective losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Ventilation losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Open door losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Electricity consumption [kW]':st.column_config.NumberColumn(format="%.2f")})
     st.write(generate_plot_instantaneous(consumption, ins_T_setpoint, ins_month,  ins_hour))
+    df_heat = st.session_state["df_heat"]
+    csv_heat = df_heat.to_csv(index=True).encode("utf-8")
+    st.download_button("Download Instantaneous Heat Data",csv_heat, "Instantaneous_Heat.csv", mime="text/csv")
 
 
 disclaimer_text = """
 **Disclaimer:**
-Responsible for the content: Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023). All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use.
+Responsible for the content: Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023). All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default tram data is used with permission from Verkehesbetriebe Zürich (VBZ). Climate data obtained from PVGIS EU.
 """
 st.markdown(disclaimer_text)
 
