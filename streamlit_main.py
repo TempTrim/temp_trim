@@ -1000,7 +1000,7 @@ if inst_button:
 
 disclaimer_text = """
 **Disclaimer:**
-Responsible for the content: Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023). All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default tram data is used with permission from Verkehesbetriebe Zürich (VBZ). Climate data obtained from PVGIS EU.
+Developed with <3 by Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023) as part of the Energy Now 2.0 challenge. All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default tram data is used with permission from Verkehesbetriebe Zürich (VBZ). Climate data obtained from PVGIS EU.
 """
 st.markdown(disclaimer_text)
 
