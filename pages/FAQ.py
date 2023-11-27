@@ -28,9 +28,9 @@ with about:
                 This app was developed by a team of students from ETH Zürich as a
                 part of the Energy Now! 2.0 challenge. The team members are:
                 - [Florian Schubert]
-                - [Clara Tillous Olivia]
+                - [Clara Tillous Olivia](https://www.linkedin.com/in/clara-tillous-oliva-1089bb213/)
                 - [Beatriz Movido]
-                - [Yash Dubey]
+                - [Yash Dubey](https://www.linkedin.com/in/yashdubey132/)
                 - [Oleksander Halipchak]
                 
                 """)
@@ -66,7 +66,6 @@ with how_to:
                 such as solar radiation, passengers, and the tram's heating system. These results
                 are also available in a graph and can be downloaded as a CSV file for further analysis.    
                  """)
-    st.divider()
 
 errors = st.expander("Troubleshooting", expanded=False)
 

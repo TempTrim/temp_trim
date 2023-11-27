@@ -1,6 +1,6 @@
 """
 File: tram_energy_savings_app.py
-Author: Florian Schubert, Clara Tillous Oliva, Yash Dubey
+Authors: Florian Schubert, Clara Tillous Oliva, Yash Dubey
 Date: November 2023
 Description: A Streamlit app to estimate energy savings in trams with different heating systems and set point temperatures.
 """
