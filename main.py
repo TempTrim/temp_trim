@@ -26,10 +26,10 @@ TIME_SHIFT_TO_UTC = +1 # UTC to MST
 
 #CSV_PATH_TEMPERATURE = 'TempZurichHourly.csv'
 CSV_PATH_TEMPERATURE = 'TempSwitzerland.csv'
-#CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/temp_trim/TempSwitzerland.csv"
+CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/temp_trim/TempSwitzerland.csv"
 #CSV_PATH_SOLAR_IRRADIATION = 'SRZurichHourly.csv'
 CSV_PATH_SOLAR_IRRADIATION = 'SRBSwitzerland.csv'
-#CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/temp_trim/SRBSwitzerland.csv"
+CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/temp_trim/SRBSwitzerland.csv"
 
 
 
@@ -513,7 +513,7 @@ def generate_plot_instantaneous(consumption, T_setpoint, month, hour):
 
 st.set_page_config(layout="centered")
 
-st.title("Energy Saving in Tram Heating - Calculator")
+st.title("TempTrim -- Calculator for Energy Saving in Tram Heating")
 
 
 
@@ -587,7 +587,7 @@ def tram_inputs(i):
                 st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary Heat generated in tram [W]"]
 
 
-        st.markdown(f" ## Tram Inputs {i+1}:")
+        st.markdown(f" ## Input for Tram {i+1}:")
 
         st.markdown("### Tram Specifications:")
     
@@ -655,6 +655,7 @@ def tram_inputs(i):
         #endregion
 
         #region: Heater Inputs
+        st.divider()
 
         st.markdown(f" ### Heating Specifications for Tram {i+1}:")
 
@@ -742,6 +743,8 @@ if "tram_count" not in st.session_state:
 for i in range (tram_count):
     tram_inputs(i)
 
+st.divider()
+
 for i in range(tram_count):
     with tabs[i]:
         selected_heaters = [heater for heater in heater_inputs if heater["Tram"] == f"Tram_{i+1}"]
@@ -755,7 +758,7 @@ for i in range(tram_count):
 
 #region: Temperature Inputs
 
-st.markdown(" ## Temperature Settings:")
+st.markdown(" ## Temperature Settings (for all Trams):")
 
 T_tram = []
 
@@ -786,15 +789,13 @@ if 'temp_inputs' in st.session_state:
 st.button("Add Temperature Setting", on_click=add_temp_option, key=f"add_temp_{i}")
 st.button("Reset Temperature Settings", on_click=reset_temp, key=f"reset_temp_{i}")
 
-
-
-
+st.divider()
 
 # endregion
 
 # region operating condition
 
-st.markdown("## Operating Schedule for all Trams:")
+st.markdown("## Operating Schedule (for all Trams) :")
 
 # Get operating schedule
 
@@ -807,6 +808,8 @@ begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_
 end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0, max_value=24, step = 1, value=24, key=f"end_hour_{i}")
 
 #endregion
+
+st.divider()
 
 #region Electricity Costs
 
@@ -951,7 +954,7 @@ if calc_button:
 
 # region display results
 
-st.markdown("## Instantaneous Power Values per Tram (available after calculation):")
+
 inst_button_hide = True
 if "calc_complete" in st.session_state:
     if st.session_state['calc_complete']:
@@ -963,6 +966,7 @@ if "ec" not in st.session_state:
     st.session_state["ec"] = pd.DataFrame()
 
 if "calc_complete" in st.session_state:
+    st.markdown("## Instantaneous Power Values per Tram:")
     if not st.session_state['calc_complete']:
         pass
     else:
@@ -980,44 +984,44 @@ if "calc_complete" in st.session_state:
         else:
             st.session_state["df_operating"] = df_operating
 
-inst_button = st.button("Show Instantaneous Power Values", key="show_instantaneous_power_values",disabled=inst_button_hide)
+    inst_button = st.button("Show Instantaneous Power Values", key="show_instantaneous_power_values",disabled=inst_button_hide)
 
-if inst_button:
-    ins_data = []
-    for T in range(0, tram_count):
-        results = extract_instantaneous_results(consumption.heat_instantaneous, consumption.electricity_instantaneous,
-                                                consumption.T_setpoint_temperatures, ins_T_setpoint,
-                                                consumption.months, ins_month,
-                                                consumption.hours, ins_hour,
-                                                consumption.tram_names, consumption.tram_names[T])
-        ins_data.append([consumption.tram_names[T],
-                         round(results[0][0]*1e-3, 2),
-                         round(results[0][1]*1e-3, 2),
-                         round(results[0][2]*1e-3, 2),
-                         round(results[0][3] * 1e-3, 2),
-                         round(results[0][4] * 1e-3, 2),
-                         round(results[0][5] * 1e-3, 2),
-                         round(results[0][6] * 1e-3, 2),
-                         round(np.sum(results[1])*1e-3, 2)])
-    ins = pd.DataFrame(ins_data, columns=(
-        ['Tram', 'Heating power [kW]', 'Solar heat [kW]', 'Passenger heat [kW]', 'Aux. device heat [kW]',
-         'Convective losses [kW]', 'Ventilation losses [kW]', 'Open door losses [kW]', 'Electricity consumption [kW]']))
-    st.divider()
-    st.markdown(" ## Results: ")
-    st.markdown(" ### Total Energy and Costs: ")
-    ec_df = st.session_state["ec"]
-    st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint [°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy [MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.NumberColumn(format="%.2f")})
-    st.write(generate_plot_total(consumption))
-    st.divider()
-    st.markdown(" ### Selected Instantaneous Period:")
-    df_operating = st.session_state["df_operating"]
-    st.dataframe(df_operating, hide_index=True, column_config= {'Outside Temperature °C': st.column_config.NumberColumn(format="%.2f"),'Setpoint Temperature':st.column_config.NumberColumn(format="%.2f"), "Month":st.column_config.NumberColumn(format="%.0f"), "Hour":st.column_config.NumberColumn(format="%.0f")})
-    st.markdown(" ### Instantaneous Power Values: ")
-    st.dataframe(ins,hide_index= True, column_config= {'Tram':st.column_config.TextColumn(), 'Heating power [kW]':st.column_config.NumberColumn(format="%.2f"), 'Solar heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Passenger heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Aux. device heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Convective losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Ventilation losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Open door losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Electricity consumption [kW]':st.column_config.NumberColumn(format="%.2f")})
-    st.write(generate_plot_instantaneous(consumption, ins_T_setpoint, ins_month,  ins_hour))
-    df_net = st.session_state["df_net"]
-    csv_heat = df_net.to_csv(index=True).encode("utf-8")
-    st.download_button("Download Instantaneous Heat Data",csv_heat, "Instantaneous_Heat.csv", mime="text/csv")
+    if inst_button:
+        ins_data = []
+        for T in range(0, tram_count):
+            results = extract_instantaneous_results(consumption.heat_instantaneous, consumption.electricity_instantaneous,
+                                                    consumption.T_setpoint_temperatures, ins_T_setpoint,
+                                                    consumption.months, ins_month,
+                                                    consumption.hours, ins_hour,
+                                                    consumption.tram_names, consumption.tram_names[T])
+            ins_data.append([consumption.tram_names[T],
+                            round(results[0][0]*1e-3, 2),
+                            round(results[0][1]*1e-3, 2),
+                            round(results[0][2]*1e-3, 2),
+                            round(results[0][3] * 1e-3, 2),
+                            round(results[0][4] * 1e-3, 2),
+                            round(results[0][5] * 1e-3, 2),
+                            round(results[0][6] * 1e-3, 2),
+                            round(np.sum(results[1])*1e-3, 2)])
+        ins = pd.DataFrame(ins_data, columns=(
+            ['Tram', 'Heating power [kW]', 'Solar heat [kW]', 'Passenger heat [kW]', 'Aux. device heat [kW]',
+            'Convective losses [kW]', 'Ventilation losses [kW]', 'Open door losses [kW]', 'Electricity consumption [kW]']))
+        st.divider()
+        st.markdown(" ## Results: ")
+        st.markdown(" ### Total Energy and Costs: ")
+        ec_df = st.session_state["ec"]
+        st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint [°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy [MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.NumberColumn(format="%.2f")})
+        st.write(generate_plot_total(consumption))
+        st.divider()
+        st.markdown(" ### Selected Instantaneous Period:")
+        df_operating = st.session_state["df_operating"]
+        st.dataframe(df_operating, hide_index=True, column_config= {'Outside Temperature °C': st.column_config.NumberColumn(format="%.2f"),'Setpoint Temperature':st.column_config.NumberColumn(format="%.2f"), "Month":st.column_config.NumberColumn(format="%.0f"), "Hour":st.column_config.NumberColumn(format="%.0f")})
+        st.markdown(" ### Instantaneous Power Values: ")
+        st.dataframe(ins,hide_index= True, column_config= {'Tram':st.column_config.TextColumn(), 'Heating power [kW]':st.column_config.NumberColumn(format="%.2f"), 'Solar heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Passenger heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Aux. device heat [kW]':st.column_config.NumberColumn(format="%.2f"), 'Convective losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Ventilation losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Open door losses [kW]':st.column_config.NumberColumn(format="%.2f"), 'Electricity consumption [kW]':st.column_config.NumberColumn(format="%.2f")})
+        st.write(generate_plot_instantaneous(consumption, ins_T_setpoint, ins_month,  ins_hour))
+        df_net = st.session_state["df_net"]
+        csv_heat = df_net.to_csv(index=True).encode("utf-8")
+        st.download_button("Download Instantaneous Heat Data",csv_heat, "Instantaneous_Heat.csv", mime="text/csv")
 
 
 disclaimer_text = """

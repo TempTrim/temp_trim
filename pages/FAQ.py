@@ -27,9 +27,9 @@ with about:
                 
                 This app was developed by a team of students from ETH Zürich as a
                 part of the Energy Now! 2.0 challenge. The team members are:
-                - [Florian Schubert]
+                - [Florian Schubert](https://linkedin.com/in/f-schubert)
                 - [Clara Tillous Olivia](https://www.linkedin.com/in/clara-tillous-oliva-1089bb213/)
-                - [Beatriz Movido]
+                - [Beatriz Movido](https://www.linkedin.com/in/bmovido/)
                 - [Yash Dubey](https://www.linkedin.com/in/yashdubey132/)
                 - [Oleksander Halipchak]
                 
@@ -61,7 +61,8 @@ with how_to:
                 consumption for each setpoint temperature, compared to the highest setpoint
                 temperature. A graph is also provided to visualize the results.
 
-                - **Instantaneous Results**: You can select a specific temperature, month, day and hour
+                - **Instantaneous Results**: NOTE: This is only available after completing the calculations by clicking the "Calculate" button.
+                You can select a specific temperature, month, day and hour
                 to obtain instantaneous values for heating generated in the tram by sources
                 such as solar radiation, passengers, and the tram's heating system. These results
                 are also available in a graph and can be downloaded as a CSV file for further analysis.    
