@@ -523,7 +523,7 @@ st.title("TempTrim — Calculator for Energy Saving in Tram Heating")
 # Average instantaneous passenger number per tram
 # Average fresh air supply via ventilation (in m³/h)
 # Average fresh air supply from door openings (in m³/h)
-# Average convection coefficient (in W/(m²K) )
+# Average heat transfer coefficient at chassist (in W/(m²K) )
 # Button "Load VBZ values for Cobra tram" (or something)* """
 
 # Defaults will be set to VBZ Cobra tram values
@@ -568,7 +568,7 @@ def tram_inputs(i):
             elif value == "door_openings":
                 st.session_state[f"door_openings_{i}"] = default_values["Average fresh air supply from door openings [m³/h]"]
             elif value == "convection":
-                st.session_state[f"convection_{i}"] = default_values["Average convection coefficient [W/(m²K)]"]
+                st.session_state[f"convection_{i}"] = default_values["Average heat transfer coefficient at chassis [W/(m²K)]"]
             elif value == "tram_frac":
                 st.session_state[f"tram_frac_{i}"] = default_values["Fraction of trams in operation"]
             elif value == "auxillary_heat":
@@ -582,7 +582,7 @@ def tram_inputs(i):
                 st.session_state[f"passenger_count_{i}"] = default_values["Average passenger count"]
                 st.session_state[f"ventilation_{i}"] = default_values["Average fresh air supply via ventilation [m³/h]"]
                 st.session_state[f"door_openings_{i}"] = default_values["Average fresh air supply from door openings [m³/h]"]
-                st.session_state[f"convection_{i}"] = default_values["Average convection coefficient [W/(m²K)]"]
+                st.session_state[f"convection_{i}"] = default_values["Average heat transfer coefficient at chassis [W/(m²K)]"]
                 st.session_state[f"tram_frac_{i}"] = default_values["Fraction of trams in operation"]
                 st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary heat generated in tram [W]"]
 
@@ -605,7 +605,7 @@ def tram_inputs(i):
             "Average passenger count": 37,
             "Average fresh air supply via ventilation [m³/h]": 1345,
             "Average fresh air supply from door openings [m³/h]": 3215,
-            "Average convection coefficient [W/(m²K)]": 2.8,
+            "Average heat transfer coefficient at chassis [W/(m²K)]": 2.8,
             "Fraction of trams in operation": 0.8,
             "Auxillary heat generated in tram [W]": 1500
             }
@@ -646,7 +646,7 @@ def tram_inputs(i):
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "ventilation"], key=f"default_ventilation_{i}")
             door_openings = st.number_input("Average fresh air supply from door openings [m³/h]", key=f"door_openings_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "door_openings"], key=f"default_door_openings_{i}")
-            convection = st.number_input("Average convection coefficient [W/(m²K)]", key=f"convection_{i}")
+            convection = st.number_input("Average heat transfer coefficient at chassis [W/(m²K)]", key=f"convection_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "convection"], key=f"default_convection_{i}")
             auxillary_heat = st.number_input("Auxillary heat generated in tram [W]", key=f"auxillary_heat_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "auxillary_heat"], key=f"default_auxillary_heat_{i}")
