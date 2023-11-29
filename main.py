@@ -712,15 +712,15 @@ def tram_inputs(i):
         if not df.empty: 
             
             df = df[df['Tram'] == f"Tram_{i+1}"]
-            resistive_df = df[df['Heater Type'] == 'Resistance']
+            resistive_df = df[df['Heater type'] == 'Resistance']
             if not resistive_df.empty:
-                resistive_heat = np.array(df[df['Heater Type'] == 'Resistance']['Maximum Thermal Power (kW)'].sum())*1e3
+                resistive_heat = np.array(df[df['Heater type'] == 'Resistance']['Maximum Thermal Power (kW)'].sum())*1e3
             else:
                 resistive_heat = 0
-            heat_pump_df = df[df['Heater Type'] == 'Heat Pump']
+            heat_pump_df = df[df['Heater type'] == 'Heat pump']
             if not heat_pump_df.empty:
-                heat_pumps = np.array(df[df['Heater Type'] == 'Heat Pump']['Maximum Thermal Power (kW)'].values)*1e3
-                cops = df[df['Heater Type'] == 'Heat Pump']['COP (full load)'].values
+                heat_pumps = np.array(df[df['Heater type'] == 'Heat pump']['Maximum Thermal Power (kW)'].values)*1e3
+                cops = df[df['Heater type'] == 'Heat pump']['COP (full load)'].values
             else:
                 heat_pumps = []
                 cops = []
@@ -900,9 +900,9 @@ if calc_button:
 
                 else:
                     df_elec = pd.DataFrame(values, index=pd.MultiIndex.from_tuples(index_tuples, names=['Temperature', 'Month', 'Hour', 'Tram', 'Electricity_Type']), columns=['Value'])
-                    elec_type_mapper = {0: 'Resistive Power'}
+                    elec_type_mapper = {0: 'Resistive power'}
                     # Create a mapping for values 1 to 10
-                    heat_pump_mapper = {i: f'Heat Pump {i}' for i in range(1, 11)}
+                    heat_pump_mapper = {i: f'Heat pump {i}' for i in range(1, 11)}
                     # Update the original mapper with the new values
                     elec_type_mapper.update(heat_pump_mapper)
                     df_elec = df_elec.reset_index()
