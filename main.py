@@ -630,14 +630,16 @@ def tram_inputs(i):
             
             name = st.text_input("Name", key=f"name_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "name"], key=f"default_name_{i}")
+            tram_count = st.number_input("Tram count", key=f"tram_count_{i}")
+            st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_count"], key=f"default_tram_count_{i}")
+            tram_frac = st.number_input("Fraction of trams in operation", key=f"tram_frac_{i}")
+            st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_frac"], key=f"default_tram_frac_{i}")
             length = st.number_input("Length [m]", key=f"length_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "length"], key=f"default_length_{i}")
             width = st.number_input("Width [m]", key=f"width_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "width"], key=f"default_width_{i}")
             height = st.number_input("Height [m]", key=f"height_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "height"], key=f"default_height_{i}")
-            tram_count = st.number_input("Tram count", key=f"tram_count_{i}")
-            st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_count"], key=f"default_tram_count_{i}")
             passenger_count = st.number_input("Average passenger count", key=f"passenger_count_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "passenger_count"], key=f"default_passenger_count_{i}")
             ventilation = st.number_input("Average fresh air supply via ventilation [m³/h]", key=f"ventilation_{i}")
@@ -646,8 +648,6 @@ def tram_inputs(i):
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "door_openings"], key=f"default_door_openings_{i}")
             convection = st.number_input("Average convection coefficient [W/(m²K)]", key=f"convection_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "convection"], key=f"default_convection_{i}")
-            tram_frac = st.number_input("Fraction of trams in operation", key=f"tram_frac_{i}")
-            st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_frac"], key=f"default_tram_frac_{i}")
             auxillary_heat = st.number_input("Auxillary heat generated in tram [W]", key=f"auxillary_heat_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "auxillary_heat"], key=f"default_auxillary_heat_{i}")
         
@@ -804,8 +804,8 @@ begin_month = st.number_input("Month of the year when operation of trams is star
 begin_day = st.number_input("Day of the month when operation of trams is started (1-31):", min_value=1, max_value = 31, value=1, step=1, key=f"begin_day_{i}")
 end_month = st.number_input("Month of the year when operation of trams is ended (1-12)", min_value=1, max_value = 12, value=12, step=1, key=f"end_month_{i}")
 end_day = st.number_input("Day of the month when operation of trams is ended (1-31):", min_value=1, max_value = 31, value=31, step=1, key=f"end_day_{i}")
-begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0.0, max_value=23.5, value=5.5,step = 0.5, format=%.1f, key=f"begin_hour_{i}")
-end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0.0, max_value=23.5, value=23.5, step = 0.5, format=%.1f, key=f"end_hour_{i}")
+begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0.0, max_value=23.5, value=5.5,step = 0.5, format="%.1f", key=f"begin_hour_{i}")
+end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0.0, max_value=23.5, value=23.5, step = 0.5, format="%.1f", key=f"end_hour_{i}")
 
 #endregion
 
