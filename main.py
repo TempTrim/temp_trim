@@ -805,7 +805,7 @@ begin_day = st.number_input("Day of the month when operation of trams is started
 end_month = st.number_input("Month of the year when operation of trams is ended (1-12)", min_value=1, max_value = 12, value=12, step=1, key=f"end_month_{i}")
 end_day = st.number_input("Day of the month when operation of trams is ended (1-31):", min_value=1, max_value = 31, value=31, step=1, key=f"end_day_{i}")
 begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0.0, max_value=23.5, value=5.5,step = 0.5, format="%.1f", key=f"begin_hour_{i}")
-end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0.0, max_value=23.5, value=23.5, step = 0.5, format="%.1f", key=f"end_hour_{i}")
+end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0.0, max_value=24.0, value=23.5, step = 0.5, format="%.1f", key=f"end_hour_{i}")
 
 #endregion
 
