@@ -932,7 +932,7 @@ if calc_button:
                                 round(consumption.electricity_total[T] * 1e-6, 2),
                                 round(consumption.electricity_cost_total[T] * 1e-6, 2),
                                 consumption.savings_total[T]])
-            ec_df = pd.DataFrame(ec_data, columns=("T_setpoint[°C]", "Heat energy [MWh]", "Electricity consumption [MWh]", "Cost [MCHF]", "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)"))
+            ec_df = pd.DataFrame(ec_data, columns=("T_setpoint [°C]", "Heat energy [MWh]", "Electricity consumption [MWh]", "Cost [MCHF]", "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)"))
             st.dataframe(ec_df, hide_index=True, column_config= {'T_setpoint<br>[°C]':st.column_config.NumberColumn(format="%.2f"), "Heat energy\n[MWh]":st.column_config.NumberColumn(format="%.2f"), "Electricity consumption [MWh]":st.column_config.NumberColumn(format="%.2f"), "Cost [MCHF]":st.column_config.NumberColumn(format="%.2f"), "Savings (cmp. to T=" + str(round(consumption.T_setpoint_temperatures[len(consumption.T_setpoint_temperatures)-1], 2)) + "°C)":st.column_config.TextColumn()})
             if "ec" not in st.session_state["ec"]:
                 st.session_state["ec"] = ec_df
@@ -1026,7 +1026,7 @@ if "calc_complete" in st.session_state:
 
 disclaimer_text = """
 **Disclaimer:**
-Developed by Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023) as part of the Energy Now 2.0 challenge. All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default tram data is used with permission from Verkehesbetriebe Zürich (VBZ). Climate data obtained from PVGIS EU.
+Developed by Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023) as part of the Energy Now 2.0! challenge. All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default Cobra tram data is used with permission from Verkehrsbetriebe Zürich (VBZ). Climate data is obtained from the EU Photovoltaic Geographical Information System (PVGIS 5.2).
 """
 st.markdown(disclaimer_text)
 
