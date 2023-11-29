@@ -538,7 +538,7 @@ heater_inputs = []
 #region Specifications
 
 # Get number of tram types
-tram_count = st.selectbox("Select Number of Tram Types", range(1,11))
+tram_count = st.selectbox("Select number of tram types", range(1,11))
 
 tabs = {}
 
@@ -570,9 +570,9 @@ def tram_inputs(i):
             elif value == "convection":
                 st.session_state[f"convection_{i}"] = default_values["Average convection coefficient [W/(m²K)]"]
             elif value == "tram_frac":
-                st.session_state[f"tram_frac_{i}"] = default_values["Fraction of Trams in Operation"]
+                st.session_state[f"tram_frac_{i}"] = default_values["Fraction of trams in operation"]
             elif value == "auxillary_heat":
-                st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary Heat generated in tram [W]"]
+                st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary heat generated in tram [W]"]
             elif value == "all":
                 st.session_state[f"name_{i}"] = default_values["Name"]
                 st.session_state[f"length_{i}"] = default_values["Length [m]"]
@@ -583,8 +583,8 @@ def tram_inputs(i):
                 st.session_state[f"ventilation_{i}"] = default_values["Average fresh air supply via ventilation [m³/h]"]
                 st.session_state[f"door_openings_{i}"] = default_values["Average fresh air supply from door openings [m³/h]"]
                 st.session_state[f"convection_{i}"] = default_values["Average convection coefficient [W/(m²K)]"]
-                st.session_state[f"tram_frac_{i}"] = default_values["Fraction of Trams in Operation"]
-                st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary Heat generated in tram [W]"]
+                st.session_state[f"tram_frac_{i}"] = default_values["Fraction of trams in operation"]
+                st.session_state[f"auxillary_heat_{i}"] = default_values["Auxillary heat generated in tram [W]"]
 
 
         st.markdown(f" ## Input for Tram {i+1}:")
@@ -606,8 +606,8 @@ def tram_inputs(i):
             "Average fresh air supply via ventilation [m³/h]": 1345,
             "Average fresh air supply from door openings [m³/h]": 3215,
             "Average convection coefficient [W/(m²K)]": 2.8,
-            "Fraction of Trams in Operation": 0.8,
-            "Auxillary Heat generated in tram [W]": 1500
+            "Fraction of trams in operation": 0.8,
+            "Auxillary heat generated in tram [W]": 1500
             }
 
             col1, col2, col3 = st.columns([0.4, 0.2, 0.4])
@@ -638,7 +638,7 @@ def tram_inputs(i):
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "height"], key=f"default_height_{i}")
             tram_count = st.number_input("Tram count", key=f"tram_count_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_count"], key=f"default_tram_count_{i}")
-            passenger_count = st.number_input("Average Passenger Count", key=f"passenger_count_{i}")
+            passenger_count = st.number_input("Average passenger count", key=f"passenger_count_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "passenger_count"], key=f"default_passenger_count_{i}")
             ventilation = st.number_input("Average fresh air supply via ventilation [m³/h]", key=f"ventilation_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "ventilation"], key=f"default_ventilation_{i}")
@@ -646,9 +646,9 @@ def tram_inputs(i):
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "door_openings"], key=f"default_door_openings_{i}")
             convection = st.number_input("Average convection coefficient [W/(m²K)]", key=f"convection_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "convection"], key=f"default_convection_{i}")
-            tram_frac = st.number_input("Fraction of Trams in Operation", key=f"tram_frac_{i}")
+            tram_frac = st.number_input("Fraction of trams in operation", key=f"tram_frac_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "tram_frac"], key=f"default_tram_frac_{i}")
-            auxillary_heat = st.number_input("Auxillary Heat generated in tram [W]", key=f"auxillary_heat_{i}")
+            auxillary_heat = st.number_input("Auxillary heat generated in tram [W]", key=f"auxillary_heat_{i}")
             st.button("Load Cobra VBZ value", on_click=defaults, args = [i, "auxillary_heat"], key=f"default_auxillary_heat_{i}")
         
         
@@ -804,8 +804,8 @@ begin_month = st.number_input("Month of the year when operation of trams is star
 begin_day = st.number_input("Day of the month when operation of trams is started (1-31):", min_value=1, max_value = 31, value=1, step=1, key=f"begin_day_{i}")
 end_month = st.number_input("Month of the year when operation of trams is ended (1-12)", min_value=1, max_value = 12, value=12, step=1, key=f"end_month_{i}")
 end_day = st.number_input("Day of the month when operation of trams is ended (1-31):", min_value=1, max_value = 31, value=31, step=1, key=f"end_day_{i}")
-begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0, max_value=24, value=5,step = 1, key=f"begin_hour_{i}")
-end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0, max_value=24, step = 1, value=24, key=f"end_hour_{i}")
+begin_hour = st.number_input("Hour of starting operation every day (0-24)", min_value=0.0, max_value=23.5, value=5.5,step = 0.5, format=%.1f, key=f"begin_hour_{i}")
+end_hour = st.number_input("Hour of ending operation every day (0-24)", min_value=0.0, max_value=23.5, value=23.5, step = 0.5, format=%.1f, key=f"end_hour_{i}")
 
 #endregion
 
