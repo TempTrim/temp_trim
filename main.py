@@ -25,8 +25,8 @@ MONTH_DAYS_MID = [16, 46, 75, 106, 136, 167, 197, 228, 259, 289, 320, 350] # day
 TIME_SHIFT_TO_UTC = +1 # UTC to MST
 
 #CSV_PATH_TEMPERATURE = 'TempZurichHourly.csv'
-#CSV_PATH_TEMPERATURE = 'TempSwitzerland.csv'
-CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/temp_trim/TempSwitzerland.csv"
+CSV_PATH_TEMPERATURE = 'TempSwitzerland.csv'
+#CSV_PATH_TEMPERATURE = "/Users/yash/Documents/GitHub/temp_trim/TempSwitzerland.csv"
 #CSV_PATH_SOLAR_IRRADIATION = 'SRZurichHourly.csv'
 CSV_PATH_SOLAR_IRRADIATION = 'SRBSwitzerland.csv'
 #CSV_PATH_SOLAR_IRRADIATION = "/Users/yash/Documents/GitHub/temp_trim/SRBSwitzerland.csv"
@@ -606,7 +606,7 @@ def tram_inputs(i):
             "Average fresh air supply via ventilation [m³/h]": 1345,
             "Average fresh air supply from door openings [m³/h]": 3215,
             "Average convection coefficient [W/(m²K)]": 2.8,
-            "Fraction of Trams in Operation": 0.9,
+            "Fraction of Trams in Operation": 0.8,
             "Auxillary Heat generated in tram [W]": 1500
             }
 
