@@ -799,7 +799,7 @@ st.markdown("## Operating Schedule (for all Trams) :")
 
 # Get operating schedule
 
-location = st.selectbox('Select City', LIST_OF_CITIES)
+location = st.selectbox('Select city', LIST_OF_CITIES)
 begin_month = st.number_input("Month of the year when operation of trams is started (1-12)", min_value=1, max_value = 12, value=1, step=1, key=f"begin_month_{i}")
 begin_day = st.number_input("Day of the month when operation of trams is started (1-31):", min_value=1, max_value = 31, value=1, step=1, key=f"begin_day_{i}")
 end_month = st.number_input("Month of the year when operation of trams is ended (1-12)", min_value=1, max_value = 12, value=12, step=1, key=f"end_month_{i}")
@@ -972,10 +972,10 @@ if "calc_complete" in st.session_state:
     else:
         consumption = st.session_state["consumption"]
         #st.write(consumption)
-        ins_T_setpoint = st.selectbox("Select Set Point Temperature", consumption.T_setpoint_temperatures)
+        ins_T_setpoint = st.selectbox("Select set-point temperature", consumption.T_setpoint_temperatures)
         month_list = [month + 1 for month in consumption.months]
-        ins_month = st.selectbox("Select Month", month_list) - 1
-        ins_hour = st.selectbox("Select Hour", consumption.hours)
+        ins_month = st.selectbox("Select month", month_list) - 1
+        ins_hour = st.selectbox("Select hour", consumption.hours)
         # Save to dataframe 
         T_environment = st.session_state["climate_schedule"].T_environment[ins_month][ins_hour]
         df_operating = pd.DataFrame({"Outside Temperature °C":T_environment,"Setpoint Temperature":ins_T_setpoint, "Month":ins_month+1, "Hour":ins_hour}, index=[0])
@@ -984,7 +984,7 @@ if "calc_complete" in st.session_state:
         else:
             st.session_state["df_operating"] = df_operating
 
-    inst_button = st.button("Show Instantaneous Power Values", key="show_instantaneous_power_values",disabled=inst_button_hide)
+    inst_button = st.button("Show instantaneous power values", key="show_instantaneous_power_values",disabled=inst_button_hide)
 
     if inst_button:
         ins_data = []
@@ -1021,7 +1021,7 @@ if "calc_complete" in st.session_state:
         st.write(generate_plot_instantaneous(consumption, ins_T_setpoint, ins_month,  ins_hour))
         df_net = st.session_state["df_net"]
         csv_heat = df_net.to_csv(index=True).encode("utf-8")
-        st.download_button("Download Instantaneous Heat Data",csv_heat, "Instantaneous_Heat.csv", mime="text/csv")
+        st.download_button("Download instantaneous heat data",csv_heat, "instantaneous_heat.csv", mime="text/csv")
 
 
 disclaimer_text = """
