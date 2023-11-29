@@ -335,8 +335,8 @@ def calculate_consumption(trams, climate_schedule, T_tram):
                                                                             climate_schedule.f_sun, max(0, A_abs))
                     electricity_instantaneous_tmp = model_electricity_consumption(trams[t], heat_instantaneous_tmp[0])
 
-                    heat_total[T] += (trams[t].tram_count * trams[t].tram_fraction_operational * heat_instantaneous_tmp[0]) * h_delta
-                    electricity_total[T] += (tram.tram_count * tram.tram_fraction_operational * sum(electricity_instantaneous_tmp)) * h_delta
+                    heat_total[T] += (trams[t].tram_count * trams[t].tram_fraction_operational * heat_instantaneous_tmp[0]) * h_delta * climate_schedule.operation_days[months[m]]
+                    electricity_total[T] += (tram.tram_count * tram.tram_fraction_operational * sum(electricity_instantaneous_tmp)) * h_delta * climate_schedule.operation_days[months[m]]
 
                     heat_instantaneous[T][m][h][t] = heat_instantaneous_tmp
                     electricity_instantaneous[T][m][h][t] = electricity_instantaneous_tmp
