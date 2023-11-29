@@ -513,7 +513,7 @@ def generate_plot_instantaneous(consumption, T_setpoint, month, hour):
 
 st.set_page_config(layout="centered")
 
-st.title("TempTrim -- Calculator for Energy Saving in Tram Heating")
+st.title("TempTrim — Calculator for Energy Saving in Tram Heating")
 
 
 
@@ -625,7 +625,7 @@ def tram_inputs(i):
                 st.session_state[f'convection_{i}'] = 0
                 st.session_state[f'tram_frac_{i}'] = 0
 
-            col2.button("Reset All Values", on_click=reset, args=[i], key=f"reset_{i}")
+            col2.button("Reset all values", on_click=reset, args=[i], key=f"reset_{i}")
 
             
             name = st.text_input("Name", key=f"name_{i}")
@@ -665,20 +665,20 @@ def tram_inputs(i):
             st.write(f"Heater {heater + 1}")
 
             # Dropdown to select type of heater
-            heater_type = st.selectbox(f"Select Heater Type {heater+1}", ["Heat Pump", "Resistance"], key = f"heatertype{i+1}_{heater+1}")
+            heater_type = st.selectbox(f"Select heater type {heater+1}", ["Heat pump", "Resistance"], key = f"heatertype{i+1}_{heater+1}")
 
             # Maximum thermal power (input field)
-            max_thermal_power = st.number_input("Maximum Thermal Power (kW):", min_value=1.0, value=100.0, format="%.1f", key = f"max_thermal_power{i+1}_{heater+1}")
+            max_thermal_power = st.number_input("Maximum thermal power (kW):", min_value=1.0, value=100.0, format="%.1f", key = f"max_thermal_power{i+1}_{heater+1}")
 
-            if heater_type == "Heat Pump":
+            if heater_type == "Heat pump":
                 # Input field for average COP
                 cop = st.number_input("COP at maximum power:", min_value=1.0, value=3.0, format="%.2f", key = f"cop{i+1}_{heater+1}")
             else:
-                cop = "Not Applicable"
+                cop = "Not applicable"
 
             heater_dict = ({
-                "Heater Type": heater_type,
-                "Maximum Thermal Power (kW)": max_thermal_power,
+                "Heater type": heater_type,
+                "Maximum thermal power (kW)": max_thermal_power,
                 "COP (full load)": cop,
                 "Tram": f"Tram_{i+1}"
             })
@@ -700,10 +700,10 @@ def tram_inputs(i):
             for heater in range(st.session_state[f'heaters_{i}']):
                 heater_options(heater)
 
-        st.button("Add Heater", on_click=add_heater_option, key=f"add_heater_{i}")
+        st.button("Add heater", on_click=add_heater_option, key=f"add_heater_{i}")
 
         # Create a button to reset the input section
-        reset_button = st.button("Remove Heaters", on_click=reset_heaters, key=f"reset_heaters_{i}")
+        reset_button = st.button("Remove heaters", on_click=reset_heaters, key=f"reset_heaters_{i}")
 
         # Print the user inputs
         
@@ -770,7 +770,7 @@ def temp_options(temp):
         st.write(f"Set point temperature {temp + 1}")
     
         # Maximum thermal power (input field)
-        temp_value = st.number_input("Set Point Temperature [°C]:", min_value=5.0, max_value=30.0, step = 0.5, value=18.0, format="%.1f", key = f"temp_value_{temp}_{i}")
+        temp_value = st.number_input("Set point temperature [°C]:", min_value=5.0, max_value=30.0, step = 0.5, value=18.0, format="%.1f", key = f"temp_value_{temp}_{i}")
     
         T_tram.append(temp_value)
         #st.write(T_tram)
@@ -786,8 +786,8 @@ if 'temp_inputs' in st.session_state:
     for temp in range(st.session_state['temp_inputs']):
         temp_options(temp)
 
-st.button("Add Temperature Setting", on_click=add_temp_option, key=f"add_temp_{i}")
-st.button("Reset Temperature Settings", on_click=reset_temp, key=f"reset_temp_{i}")
+st.button("Add temperature set-point", on_click=add_temp_option, key=f"add_temp_{i}")
+st.button("Remove temperature set-points", on_click=reset_temp, key=f"reset_temp_{i}")
 
 st.divider()
 
