@@ -714,12 +714,12 @@ def tram_inputs(i):
             df = df[df['Tram'] == f"Tram_{i+1}"]
             resistive_df = df[df['Heater type'] == 'Resistance']
             if not resistive_df.empty:
-                resistive_heat = np.array(df[df['Heater type'] == 'Resistance']['Maximum Thermal Power (kW)'].sum())*1e3
+                resistive_heat = np.array(df[df['Heater type'] == 'Resistance']['Maximum thermal power (kW)'].sum())*1e3
             else:
                 resistive_heat = 0
             heat_pump_df = df[df['Heater type'] == 'Heat pump']
             if not heat_pump_df.empty:
-                heat_pumps = np.array(df[df['Heater type'] == 'Heat pump']['Maximum Thermal Power (kW)'].values)*1e3
+                heat_pumps = np.array(df[df['Heater type'] == 'Heat pump']['Maximum thermal power (kW)'].values)*1e3
                 cops = df[df['Heater type'] == 'Heat pump']['COP (full load)'].values
             else:
                 heat_pumps = []
