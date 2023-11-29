@@ -2,7 +2,7 @@
 File: tram_energy_savings_app.py
 Authors: Florian Schubert, Clara Tillous Oliva, Yash Dubey
 Date: November 2023
-Description: A Streamlit app to estimate energy savings in trams with different heating systems and set point temperatures.
+Description: A Streamlit app to estimate energy savings in trams with different heating systems and set-point temperatures.
 """
 
 import streamlit as st 
@@ -767,10 +767,10 @@ if 'temp_inputs' not in st.session_state:
 
 def temp_options(temp):
     
-        st.write(f"Set point temperature {temp + 1}")
+        st.write(f"Set-point temperature {temp + 1}")
     
         # Maximum thermal power (input field)
-        temp_value = st.number_input("Set point temperature [°C]:", min_value=5.0, max_value=30.0, step = 0.5, value=18.0, format="%.1f", key = f"temp_value_{temp}_{i}")
+        temp_value = st.number_input("Set-point temperature [°C]:", min_value=5.0, max_value=30.0, step = 0.5, value=18.0, format="%.1f", key = f"temp_value_{temp}_{i}")
     
         T_tram.append(temp_value)
         #st.write(T_tram)
