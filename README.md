@@ -3,6 +3,7 @@
 ## Description
 The app is designed to calculate savings in energy consumption in the form of heating demand for trams depending on setpoint temperatures. The app uses a thermodynamic model developed using experimental data from Verkehersbetreibe Zurich (VBZ). For more details about the model, refer to the [paper]()
 The app is developed and hosted using [Streamlit](https://www.streamlit.io/).
+Climate data is obtained from the EU Photovoltaic Geographical Information System (PVGIS 5.2, see files SRBSwitzerland.csv and TempSwitzerland.csv).
 
 ## Table of Contents
 - [Usage](#usage)
