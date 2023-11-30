@@ -19,9 +19,9 @@ with about:
                 The app uses a thermodynamic model to estimate the energy consumption
                 of a tram. The model is based on the energy balance of the tram and
                 the heat transfer between the tram and its surroundings. The model
-                is validated on data provided by Verkehersbetriebe Zürich (VBZ).
+                is validated on data provided by Verkehrsbetriebe Zürich (VBZ).
 
-                The model used can be found [here](https://github.com/TempTrim/temp_trim/blob/main/paper_modelling.pdf)
+                The model used is described in a paper found [here](https://github.com/TempTrim/temp_trim/blob/main/paper_modelling.pdf).
                 """)
     st.divider()
     st.markdown(" #### Who made this app?")
