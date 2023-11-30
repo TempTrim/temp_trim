@@ -432,11 +432,6 @@ def generate_plot_instantaneous(consumption, T_setpoint, month, hour):
         categories[2*t] = consumption.tram_names[t] + ' (heating)'
         categories[2*(t+1)-1] = consumption.tram_names[t] + ' (losses)'
 
-   # st.write(categories)
-   # print("next")
-   # st.write(data_lower)
-
-
     fig, ax = plt.subplots(figsize=(10, 6))
     plt.subplots_adjust(left=0.2)
     plt.subplots_adjust(bottom=0.25)
