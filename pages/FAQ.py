@@ -20,6 +20,8 @@ with about:
                 of a tram. The model is based on the energy balance of the tram and
                 the heat transfer between the tram and its surroundings. The model
                 is validated on data provided by Verkehersbetriebe Zürich (VBZ).
+
+                The model used can be found [here](https://github.com/TempTrim/temp_trim/blob/main/paper_modelling.pdf)
                 """)
     st.divider()
     st.markdown(" #### Who made this app?")
