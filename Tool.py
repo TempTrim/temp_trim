@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 ##### CONSTANTS #####
 
 LIST_OF_CITIES = ["Zurich", "Bern", "Basel", "Geneva", "Neuchatel"]
-#LIST_OF_CITIES = ["Zurich"]
 
 C_P_AIR = 1004 # mass-specific heat capacity of air (at T=20°C, p=1050hPa) [J/kgK]
 RHO_AIR = 1.275 # density of air (at T=20°C, p=1050hPa) [kg/m³]
@@ -194,7 +193,6 @@ class ExceededHeatingPowerError(Exception):
 
 
 # function calculate_absorption_area
-# todo commenting
 def calculate_absorption_area(tram_length, tram_width, tram_height, latitude, month, hour):
     delta = 23.45/180*math.pi * math.sin(2*math.pi/365*(284+MONTH_DAYS_MID[month]))
     omega = 15/180*math.pi * (hour-12)
@@ -226,7 +224,6 @@ def calculate_heating_instantaneous(tram, T_tram, T_environment, I_sun, f_sun, A
                       - (heat_sun + heat_passenger + heat_auxiliary_devices)))
     return [heating_demand, heat_sun, heat_passenger, heat_auxiliary_devices, heat_loss_convection,
             heat_loss_ventilation, heat_loss_doors]
-    # todo references to equation numbers in thermodynamics paper
 
 
 # function calculate_total_consumption_and_savings:
@@ -373,30 +370,7 @@ def print_total(consumption):
     print('T_setpoint=\t' + str(consumption.T_setpoint_temperatures) + '°C')
     print('Q_heat=\t\t' + str(np.array(consumption.heat_total) * 1e-6) + ' MWh')
     print('P_el=\t\t' + str(np.array(consumption.electricity_total) * 1e-6) + ' MWh')
-    print('Cost=\t\t' + str(np.array(consumption.electricity_cost_total) * 1e-3) + ' kCHF')
-
-
-# function print_instantaneous:
-def print_instantaneous(consumption, T_setpoint, month, hour, tram_name):
-    print('\n----- SELECTION [' + str(T_setpoint) + '°C, month ' + str(month+1) + ' at ' + str(hour) + ':00, tram \'' + tram_name + '\'] -----')
-    results = extract_instantaneous_results(consumption.heat_instantaneous, consumption.electricity_instantaneous,
-                                            consumption.T_setpoint_temperatures, T_setpoint,
-                                            consumption.months, month,
-                                            consumption.hours, hour,
-                                            consumption.tram_names, tram_name)
-    print('T_setpoint=\t' + str(T_setpoint) + '°C')
-    print('Q_heat=\t\t' + str(np.array(results[0]) * 1e-3) + ' kW')
-    print ('\t\t\t(0: total heating demand, 1: sun radiative heating, 2: passenger heating, 3: auxiliary device heating,'
-           '4: convective losses, 5: ventilation losses, 6: open door losses)')
-    print('P_el=\t\t' + str(np.array(results[1]) * 1e-3) + ' kW')
-
-    #for t in range(0, len(consumption.tram_names)):
-    #    print('\n----- INSTANTANEOUS POWER RESULTS FOR TRAM \'' + consumption.tram_names[t] + '\' -----')
-    #    for i in range(0, len(consumption.month_instantaneous_per_tram[t])):
-    #        print('[m+1=' + str(consumption.month_instantaneous_per_tram[t][i]+1) + ', '
-    #              'T_tram=' + str(consumption.T_setpoint_instantaneous_per_tram[t][i]) + '°C]:\t\t' +
-    #              'Q_heat=' + str(consumption.heat_instantaneous_per_tram[t][i][0]/1000) + ' kW,\t' +
-    #              'P_el=' + str(sum(consumption.electricity_instantaneous_per_tram[t][i])/1000) + ' kW')
+    print('Cost=\t\t' + str(np.array(consumption.electricity_cost_total) * 1e-6) + ' MCHF')
 
 
 # function generate_plot_total:
