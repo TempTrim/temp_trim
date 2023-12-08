@@ -991,7 +991,7 @@ if "calc_complete" in st.session_state:
 
 disclaimer_text = """
 **Disclaimer:**
-Developed by Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023) as part of the Energy Now 2.0! challenge. All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default Cobra tram data is used with permission from Verkehrsbetriebe Zürich (VBZ). Climate data is obtained from the EU Photovoltaic Geographical Information System (PVGIS 5.2).
+Developed by Florian Schubert, Clara Tillous Oliva, Beatriz Movido, Oleksandr Halipchak, and Yash Dubey, students at ETH Zurich, Rämistrasse 101, 8092 Zürich, Switzerland (November 2023) as part of the Energy Now 2.0! challenge. All results and information are to be understood as estimates. No liability is taken for their accuracy or for the consequences of their use. Default Cobra tram data is used with permission from Verkehrsbetriebe Zürich (VBZ). Climate data is obtained from the EU Photovoltaic Geographical Information System (PVGIS 5.2). 
 """
 st.markdown(disclaimer_text)
 

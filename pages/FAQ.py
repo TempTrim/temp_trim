@@ -11,7 +11,7 @@ with about:
                 in energy consumption in trams by varying the setpoint temperature
                 of the tram's heating system. The app is designed to be a tool used
                 by tram operators to estimate potential energy savings and generate
-                public support for eco-friendly intiatives.
+                public support for eco-friendly intiatives. The project received the Audience Award at the Energy Now! 2.0 finale.
                 """)
     st.divider()
     st.markdown("#### How does it work?")
@@ -30,10 +30,9 @@ with about:
                 This app was developed by a team of students from ETH Zürich as a
                 part of the Energy Now! 2.0 challenge. The team members are:
                 - [Florian Schubert](https://linkedin.com/in/f-schubert)
-                - [Clara Tillous Olivia](https://www.linkedin.com/in/clara-tillous-oliva-1089bb213/)
+                - [Clara Tillous Oliva](https://www.linkedin.com/in/clara-tillous-oliva-1089bb213/)
                 - [Beatriz Movido](https://www.linkedin.com/in/bmovido/)
                 - [Yash Dubey](https://www.linkedin.com/in/yashdubey132/)
-                - [Oleksander Halipchak]
                 
                 """)
     
